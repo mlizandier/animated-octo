@@ -2,7 +2,7 @@ var bulletTime1 = 0;
 
 var bullet_player1_material = new THREE.MeshLambertMaterial(
 {
-    color: 0x00ff00, 
+    color: 0x00ff00,
     transparent: false
 });
 
@@ -19,7 +19,7 @@ function shoot()
         bullet.angle = player1.direction;
         player1.bullets.push(bullet);
         bulletTime1 = clock.getElapsedTime();
-    } 
+    }
 
     // move bullets
     var moveDistance = 5;
@@ -58,11 +58,15 @@ function bullet_collision()
 function player_collision()
 {
     //collision between player and walls
-    var x = player1.graphic.position.x + WIDTH / 2;
+    var x = player1.graphic.position.x + WIDTH/2;
     var y = player1.graphic.position.y + HEIGHT / 2;
 
-    if ( x > WIDTH )
+    if (x < 0) {
+        player1.graphic.position.x -= x;
+    }
+    if ( x > WIDTH ) {
         player1.graphic.position.x -= x - WIDTH;
+    }
     if ( y < 0 )
         player1.graphic.position.y -= y;
     if ( y > HEIGHT )
@@ -82,18 +86,20 @@ function player_falling()
 
     for (var i = 0; i < length; i++) {
         element = noGround[i];
+        // console.log(element)
+        if (element != undefined) { // Readme 3 -> fixed console error
+            var tileX = (element[0]) | 0;
+            var tileY = (element[1]) | 0;
+            var mtileX = (element[0] + sizeOfTileX) | 0;
+            var mtileY = (element[1] + sizeOfTileY) | 0;
 
-        var tileX = (element[0]) | 0;
-        var tileY = (element[1]) | 0;
-        var mtileX = (element[0] + sizeOfTileX) | 0;
-        var mtileY = (element[1] + sizeOfTileY) | 0;
-
-        if ((x > tileX)
-            && (x < mtileX)
-            && (y > tileY) 
-            && (y < mtileY))
-        {
-           player1.dead();
+            if ((x > tileX)
+                && (x < mtileX)
+                && (y > tileY)
+                && (y < mtileY))
+            {
+            player1.dead();
+            }
         }
     }
 
