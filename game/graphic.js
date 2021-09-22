@@ -24,8 +24,8 @@ function init()
     $container.append(renderer.domElement);
 
 
-    player1 = new Player("player1", 0xFFFF00, new THREE.Vector2(60, 0), 0);
-    player2 = new Enemy("nme1", 0x49FF50, new THREE.Vector2(300, 35), 0);
+    player1 = new Player("player1", 0xFFFF00, new THREE.Vector2(0, 0), Math.PI);
+    player2 = new Enemy("nme1", 0x49FF50, new THREE.Vector2(240, 0), 0);
 
     noGround = [];
     ground = new Ground(0xffffff, WIDTH, HEIGHT, 10, player1, player2);
