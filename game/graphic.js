@@ -16,26 +16,30 @@ function init()
     controls = new THREE.OrbitControls(camera, renderer.domElement);
 
     camera.position.z = 500;
+
     scene.add(camera);
 
     renderer.setSize(WIDTH, HEIGHT);
 
     $container.append(renderer.domElement);
 
-    noGround = [];
-    ground = new Ground(0xffffff, WIDTH, HEIGHT, 10);
 
-    player1 = new Player("player1", 0xFFFF00, new THREE.Vector2(50, 0), 0);
+    player1 = new Player("player1", 0xFFFF00, new THREE.Vector2(60, 0), 0);
+    player2 = new Enemy("nme1", 0x49FF50, new THREE.Vector2(300, 35), 0);
+
+    noGround = [];
+    ground = new Ground(0xffffff, WIDTH, HEIGHT, 10, player1, player2);
+
     scene.add(player1.graphic);
+    scene.add(player2.graphic);
 
     light1 = new Light("sun", 0xffffff, "0,0,340");
     scene.add(light1);
 }
 
-function Ground(color, size_x, size_y, nb_tile)
+function Ground(color, size_x, size_y, nb_tile, player, nme)
 {
     colors = Array(0xff0000, 0x00ff00, 0x0000ff, 0x000000);
-
     sizeOfTileX = size_x / nb_tile;
     minX = -(size_x/2);
     maxX = (size_x/2);
@@ -46,14 +50,17 @@ function Ground(color, size_x, size_y, nb_tile)
 
     for (x = minX; x <= maxX; x = x+sizeOfTileX){
         for (y = minY; y <= maxY; y = y+sizeOfTileY){
-
-            color = colors[Math.floor(Math.random()*colors.length)];
+            if (x === player.position.x && y === player.position.y) {
+                color = colors[1];
+            } else {
+                color = colors[Math.floor(Math.random()*colors.length)];
+            }
 
             if (0x000000 != color)
             {
                 tmpGround = new THREE.Mesh(
                 new THREE.PlaneGeometry(sizeOfTileX-10, sizeOfTileY-10),
-                new THREE.MeshLambertMaterial({color: color, transparent: true, opacity: 0.6}));
+                new THREE.MeshLambertMaterial({color: color, transparent: true, opacity: 1}));
                 tmpGround.position.x = x;
                 tmpGround.position.y = y;
                 scene.add(tmpGround);
